@@ -1,10 +1,22 @@
+import { useEffect, useState } from "react";
 import { User } from "../data/data.ts";
 
 interface UserTableProps {
     users: User[];
+    editUser: (userId: number) => void;
 }
 
-export default function UserTable({ users }: UserTableProps) {
+export default function UserTable({ users, editUser }: UserTableProps) {
+    const [localUsers, setLocalUsers] = useState<User[]>(users);
+
+    const handleEditUser = (userId: number) => {
+        editUser(userId);
+    };
+
+    useEffect(() => {
+        setLocalUsers(users);
+    }, [users]);
+
     return (
         <table className="simple-table">
             <thead>
@@ -17,7 +29,7 @@ export default function UserTable({ users }: UserTableProps) {
                 </tr>
             </thead>
             <tbody>
-                {users.map((user) => (
+                {localUsers.map((user) => (
                     <tr key={user.id}>
                         <td>{user.id}</td>
                         <td>{user.name}</td>
@@ -26,7 +38,7 @@ export default function UserTable({ users }: UserTableProps) {
                         </td>
                         <td>{user.isActive ? "Yes" : "No"}</td>
                         <td>
-                            <button>Delete</button>
+                            <button onClick={() => handleEditUser(user.id || -1)}>Edit</button>
                         </td>
                     </tr>
                 ))}
