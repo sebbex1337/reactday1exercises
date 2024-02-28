@@ -38,7 +38,7 @@ export default function FetchDemo1({ title }: BaseProps) {
             setUser(response);
             console.log(response);
         });
-    }, []);
+    }, [userId]);
 
     return (
         <>
